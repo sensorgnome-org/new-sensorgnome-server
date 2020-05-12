@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'website',
     'message_queue',
     'rest_api',
-    'sg_status',
+    'sg_management',
 ]
 
 MIDDLEWARE = [
