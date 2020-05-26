@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'sensorgnome_server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'HOST': 'db',
+        'HOST': 'sensorgnome-db',
         'PORT': 5432,
         'NAME': "sensorgnome-server",
         'USER': 'postgres',
@@ -132,5 +132,16 @@ STATIC_URL = '/static/'
 
 
 # Celetry config
-CELERY_BROKER_URL = 'amqp://admin:admin@rabbit:5672//'
+CELERY_BROKER_URL = 'amqp://admin:admin@sensorgnome-rabbit:5672//'
 CELERY_RESULT_BACKEND = 'django-db'
+
+# celery-message-consumer config
+EVENT_CONSUMER_USE_DJANGO = True
+
+EXCHANGES = {
+    'default': {
+        'name': 'sensorgnome-exchange',  # actual name of exchange in RabbitMQ
+        'type': 'fanout',  # an AMQP exchange type
+    },
+
+}

@@ -1,48 +1,20 @@
 import os
 import kombu
 from celery import Celery, bootsteps
+import django
+
+# Needed before event_consumer is imported.
+os.environ.setdefault("EVENT_CONSUMER_APP_CONFIG", "sensorgnome_server.settings")
 
 # Needed to load settings when we're not loading all of Django.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sensorgnome_server.settings')
 
+django.setup()
+
+from event_consumer.handlers import AMQPRetryConsumerStep
+
 app = Celery('sensorgnome_server')
+app.steps['consumer'].add(AMQPRetryConsumerStep)
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Task modules loaded from registered app configs.
 app.autodiscover_tasks()
-
-with app.pool.acquire(block=True) as conn:
-    exchange = kombu.Exchange(
-        name='sensorgnome-exchange',
-        type='fanout',
-        durable=True,
-        channel=conn,
-    )
-    exchange.declare()
-
-    queue = kombu.Queue(
-        name='sensorgnome-queue',
-        exchange=exchange,
-        routing_key='sensorgnome',
-        channel=conn,
-        queue_arguments={
-            'x-queue-type': 'classic'
-        },
-        durable=True
-    )
-    queue.declare()
-
-
-class MyConsumerStep(bootsteps.ConsumerStep):
-
-    def get_consumers(self, channel):
-        return [kombu.Consumer(channel,
-                               queues=[queue],
-                               callbacks=[self.handle_message],
-                               accept=['json'])]
-
-    def handle_message(self, body, message):
-        print('Received message: {0!r}'.format(body))
-        message.ack()
-
-app.steps['consumer'].add(MyConsumerStep)

@@ -13,9 +13,9 @@ RUN pip install pipenv
 RUN pipenv install --system --deploy
 
 # Copy and set our project folder from local to container
-RUN mkdir /sensorgnome-server
-WORKDIR /sensorgnome-server
-COPY ./ /sensorgnome-server
+RUN mkdir /sensorgnome-server-software
+WORKDIR /sensorgnome-server-software
+COPY ./ /sensorgnome-server-software
 
 # Copy the wait-for script from local to container
 COPY ./wait-for /bin/wait-for

@@ -12,6 +12,7 @@ django-celery-results = "*"
 kombu = "*"
 psycopg2 = "*"
 djangorestframework = "*"
+celery-message-consumer = "*"
 
 [requires]
 python_version = "3.8"
