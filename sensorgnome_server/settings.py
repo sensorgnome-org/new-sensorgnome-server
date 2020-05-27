@@ -145,3 +145,11 @@ EXCHANGES = {
     },
 
 }
+
+EVENT_CONSUMER_EXCHANGES = {
+    'default': {
+        'name': 'sensorgnome-exchange',  # actual name of exchange in RabbitMQ
+        'type': 'fanout',  # an AMQP exchange type
+    },
+
+}

@@ -5,6 +5,7 @@ from .models import Message
 from sg_management.models import SensorGnome
 import kombu
 import json
+import datetime
 
 os.environ.setdefault("EVENT_CONSUMER_APP_CONFIG", "sensorgnome_server.settings")
 
@@ -22,3 +23,4 @@ def process_message(body):
     sg = SensorGnome.objects.get(serial=j["id"])
     m = Message(payload=j["message"], sensorgnome=sg)
     m.save()
+    sg.update_last_seen()

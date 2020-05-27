@@ -1,5 +1,6 @@
 from django.contrib.gis.db import models
 import uuid
+import datetime
 
 class SensorGnome(models.Model):
     """
@@ -13,3 +14,7 @@ class SensorGnome(models.Model):
 
     def __str__(self):
         return f"{self.serial}/{self.name}: {self.last_seen}"
+
+    def update_last_seen(self):
+        self.last_seen = datetime.datetime.utcnow()
+        self.save()
