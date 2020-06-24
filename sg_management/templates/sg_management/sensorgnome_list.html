@@ -15,7 +15,7 @@
             </tr>
             {% for sensorgnome in object_list %}
                 <tr>
-                    <td>{{ sensorgnome.name }}</td>
+                    <td><a href="/sensorgnomes/detail/{{ sensorgnome.serial }}">{{ sensorgnome.name }}</a></td>
                     <td>{{ sensorgnome.serial }}</td>
                     <td>{{ sensorgnome.last_seen }}</td>
                 </tr>

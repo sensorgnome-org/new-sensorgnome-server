@@ -18,9 +18,12 @@ from event_consumer import message_handler
 
 @message_handler(routing_keys='sensorgnome-management')
 def process_message(body):
-    print("Message handler:", body)
     j = json.loads(body)
+    print(f"Message from {j['id']}: \"{j['message']}\".")
+    for k in j.keys():
+        if k not in ("id", "message"):
+            print(f"Extra: {k}: {j[k]}.")
     sg = SensorGnome.objects.get(serial=j["id"])
     m = Message(payload=j["message"], sensorgnome=sg)
     m.save()
-    sg.update_last_seen()
+    sg.update_last_seen()  # Would be nice if the last two lines could be atomic.
