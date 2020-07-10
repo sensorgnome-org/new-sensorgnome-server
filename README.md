@@ -1,2 +1,2 @@
-# new-sensorgnom-server
+# new-sensorgnome-server
 New sensorgnome server software.
