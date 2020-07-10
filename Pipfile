@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+vcrpy = "*"
 
 [packages]
 django = "*"
@@ -16,7 +17,7 @@ celery-message-consumer = "*"
 watchdog = "*"
 pyyaml = "*"
 argh = "*"
-motus_api = {git = "https://github.com/sensorgnome-org/python-motus-api.git",ref = "api-start"}
+motus_api = {editable = true,git = "https://github.com/sensorgnome-org/python-motus-api.git",ref = "api-start"}
 
 [requires]
 python_version = "3.8"

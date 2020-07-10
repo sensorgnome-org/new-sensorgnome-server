@@ -7,3 +7,4 @@ class SensorGnomeAdmin(admin.ModelAdmin):
     list_display = ("id", "serial", "name", "last_seen", "notes")
 
 admin.site.register(models.SensorGnome, SensorGnomeAdmin)
+admin.site.register(models.MotusSensorgnome)
