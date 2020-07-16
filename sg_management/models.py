@@ -65,7 +65,7 @@ class MotusSensorgnome(models.Model):
         Creates a instance of this model given a SensorGnome model and links them together.
         If already linked to a SensorGnome model, updates existing model.
         Args:
-            sensorgnome (SensorGnome): A Sensorgnome to add Motus metadata for.
+            parent_sensorgnome (SensorGnome): A Sensorgnome to add Motus metadata for.
         """
         motus = motus_api.SGMotusAPI()
         res = motus.get_receiver(self.device_id)
