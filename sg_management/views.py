@@ -35,7 +35,7 @@ def link_motus_receiver(request, serial):
     try:
         sg = SensorGnome.objects.get(serial=serial)
         motus_receiver = MotusSensorgnome()
-        res, created = motus_receiver.receiver_from_api(serial)
+        res, created = motus_receiver.receiver_from_api(sg)
         serializer = MotusReceiverSerializer(res)
         if created:
             status_code = status.HTTP_201_CREATED

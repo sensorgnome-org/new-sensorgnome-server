@@ -68,7 +68,7 @@ class MotusSensorgnome(models.Model):
             parent_sensorgnome (SensorGnome): A Sensorgnome to add Motus metadata for.
         """
         motus = motus_api.SGMotusAPI()
-        res = motus.get_receiver(self.device_id)
+        res = motus.get_receiver(parent_sensorgnome.serial)
         defaults = {"device_id": res.device_id}
         kwargs = {"deployment_name": res.deployment_name,
                 "deployment_status": [a[0] for a in self.Status.choices if res.deployment_status == a[1]][0],
