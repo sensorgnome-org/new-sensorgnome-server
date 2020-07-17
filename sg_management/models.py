@@ -84,4 +84,6 @@ class MotusSensorgnome(models.Model):
             kwargs["receiver_type"] = self.RcvType.choices[0][0]
         obj, created = MotusSensorgnome.objects.update_or_create(**kwargs, defaults=defaults)
         print("obj:", obj, created)
+        parent_sensorgnome.motus_metadata = obj
+        parent_sensorgnome.save()
         return obj, created
