@@ -146,7 +146,7 @@
         "motus-api": {
             "editable": true,
             "git": "https://github.com/sensorgnome-org/python-motus-api.git",
-            "ref": "1cec83c9c2a89497925273ea46f72b10a189e622"
+            "ref": "0b7c49d1172c0aef055156ad0cb94983d299be7e"
         },
         "pathtools": {
             "hashes": [

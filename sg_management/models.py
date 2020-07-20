@@ -23,7 +23,7 @@ class SensorGnome(models.Model):
         return f"{self.serial}/{self.name}: {self.last_seen}"
 
     def update_last_seen(self):
-        self.last_seen = datetime.datetime.utcnow()
+        self.last_seen = datetime.now(datetime.timezone.utc)
         self.save()
 
 
@@ -69,6 +69,8 @@ class MotusSensorgnome(models.Model):
         """
         motus = motus_api.SGMotusAPI()
         res = motus.get_receiver(parent_sensorgnome.serial)
+        if not res:
+            return None, False
         defaults = {"device_id": res.device_id}
         kwargs = {"deployment_name": res.deployment_name,
                 "deployment_status": [a[0] for a in self.Status.choices if res.deployment_status == a[1]][0],
