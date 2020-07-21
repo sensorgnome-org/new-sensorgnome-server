@@ -32,6 +32,19 @@ class TestMotusReceivers:
         assert created == True
         assert res.receiver_id == serial
 
+    @vcr.use_cassette("test-fixtures/test_motus_link_existing.yaml", match_on=['method', 'scheme', 'host', 'port', 'path'])
+    @pytest.mark.django_db
+    def test_motus_link_existing(self):
+        serial = "SG-F28CRPI33503"
+        motus_receiver = MotusSensorgnome()
+        sg = SensorGnome.objects.get(serial=serial)
+        _, _ = motus_receiver.receiver_from_api(sg)
+        motus_receiver = MotusSensorgnome()
+        sg = SensorGnome.objects.get(serial=serial)
+        res, created = motus_receiver.receiver_from_api(sg)
+        assert created == False
+        assert res.receiver_id == serial
+
     @vcr.use_cassette("test-fixtures/test_motus_link_new.yaml", match_on=['method', 'scheme', 'host', 'port', 'path'])    
     @pytest.mark.django_db
     def test_motus_link_no_exist(self):
