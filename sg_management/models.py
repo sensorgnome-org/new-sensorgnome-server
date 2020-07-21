@@ -58,7 +58,9 @@ class MotusSensorgnome(models.Model):
     mac_address = models.CharField(max_length=17, blank=True, null=True)
 
     def __str__(self):
-        return f"Motus Receiver: {self.motus_receiver_id} device {self.device_id} is a {self.receiver_type}."
+        receiver_type = self.RcvType.choices[self.receiver_type][1]
+        status = self.Status.choices[self.deployment_status][1]
+        return f"Motus Receiver: {self.motus_receiver_id} device {self.device_id} is a {receiver_type} with status {status}."
 
     def receiver_from_api(self, parent_sensorgnome):
         """
@@ -71,8 +73,9 @@ class MotusSensorgnome(models.Model):
         res = motus.get_receiver(parent_sensorgnome.serial)
         if not res:
             return None, False
-        defaults = {"device_id": res.device_id}
-        kwargs = {"deployment_name": res.deployment_name,
+        kwargs = {"device_id": res.device_id,}
+        defaults = {
+                "deployment_name": res.deployment_name,
                 "deployment_status": [a[0] for a in self.Status.choices if res.deployment_status == a[1]][0],
                 "motus_receiver_id": res.motus_receiver_id,
                 "project_receiver_id": res.project_receiver_id,
@@ -81,9 +84,10 @@ class MotusSensorgnome(models.Model):
                 "receiver_id": res.receiver_id,
                 "mac_address": res.mac_address,
         }
-        receiver_type = [a[0] for a in self.RcvType.choices if kwargs["receiver_type"] == a[1]]
+        receiver_type = [a[0] for a in self.RcvType.choices if defaults["receiver_type"].lower() == a[1].lower()][0]
         if not receiver_type:
-            kwargs["receiver_type"] = self.RcvType.choices[0][0]
+            receiver_type = self.RcvType.choices[0][0]
+        defaults["receiver_type"] = receiver_type
         obj, created = MotusSensorgnome.objects.update_or_create(**kwargs, defaults=defaults)
         print("obj:", obj, created)
         parent_sensorgnome.motus_metadata = obj
