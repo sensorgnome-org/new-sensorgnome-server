@@ -76,7 +76,7 @@ class MotusSensorgnome(models.Model):
         kwargs = {"device_id": res.device_id,}
         defaults = {
                 "deployment_name": res.deployment_name,
-                "deployment_status": [a[0] for a in self.Status.choices if res.deployment_status == a[1]][0],
+                "deployment_status": [a[0] for a in self.Status.choices if res.deployment_status.lower() == a[1]][0].lower(),
                 "motus_receiver_id": res.motus_receiver_id,
                 "project_receiver_id": res.project_receiver_id,
                 "deployment_start": res.deployment_start,
