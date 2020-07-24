@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+vcrpy = "*"
+pytest-django = "*"
+
+[packages]
+django = "*"
+celery = "*"
+django-celery-results = "*"
+kombu = "*"
+psycopg2 = "*"
+djangorestframework = "*"
+celery-message-consumer = "*"
+watchdog = "*"
+pyyaml = "*"
+argh = "*"
+motus_api = {editable = true,git = "https://github.com/sensorgnome-org/python-motus-api.git",ref = "api-start"}
+
+[requires]
+python_version = "3.8"

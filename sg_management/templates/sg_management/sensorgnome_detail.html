@@ -1,0 +1,22 @@
+{% block content %}
+  <!DOCTYPE html>
+  <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Sensorgnome {{ sensorgnome.serial }} Detail</title>
+    </head>
+    <body>
+        <h2>Sensorgnome Status</h2>
+
+            Name: {{ sensorgnome.name }}<br />
+            Serial Number: {{ sensorgnome.serial }}<br />
+            Last Seen: {{ sensorgnome.last_seen }}<br />
+            {% if sensorgnome.motus_metadata %}
+                <a href="https://sandbox.motus.org/data/receiver?id={{ sensorgnome.motus_metadata.motus_receiver_id }}"> Motus Receiver</a>
+            {% else %}
+                <a href="http://localhost:8080/sensorgnomes/apiv0/link/{{ sensorgnome.serial }}">Link this receiver with a Motus Receiver.</a>
+            {% endif %}
+
+    </body>
+  </html>
+{% endblock %}

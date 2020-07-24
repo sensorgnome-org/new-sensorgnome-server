@@ -1,0 +1,26 @@
+{% block content %}
+  <!DOCTYPE html>
+  <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Sensorgnome Status</title>
+    </head>
+    <body>
+        <h2>Sensorgnome Status</h2>
+        <table style="width:90%">
+            <tr>
+                <th>Name</th>
+                <th>Serial Number</th>
+                <th>Last connection</th>
+            </tr>
+            {% for sensorgnome in object_list %}
+                <tr>
+                    <td><a href="/sensorgnomes/detail/{{ sensorgnome.serial }}">{{ sensorgnome.name }}</a></td>
+                    <td>{{ sensorgnome.serial }}</td>
+                    <td>{{ sensorgnome.last_seen }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+  </html>
+{% endblock %}

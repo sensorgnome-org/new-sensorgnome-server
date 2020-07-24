@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+
+  backend:
+    build:
+      context: .
+    image: sensorgnome-server-backend-image
+    container_name: sensorgnome-server-backend
+    hostname: sensorgnome-server
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/sensorgnome-server-software
+    command: >
+      sh -c "wait-for db:5432 && wait-for rabbit:5672 &&
+            python manage.py migrate &&
+            # DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username admin --email admin@example.com &&
+            python manage.py runserver 0.0.0.0:8080"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+      - rabbit
+    networks:
+      - shared_network
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: sensorgnome-rabbit
+    hostname: sensorgnome-rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_DEFAULT_VHOST=/
+    ports:
+      - "5682:5672"
+      - "15682:15672"
+    networks:
+      - shared_network
+
+  worker:
+    image: sensorgnome-server-backend-image
+    container_name: worker
+    restart: on-failure
+    volumes:
+      - .:/sensorgnome-server-software
+    command: >
+      sh -c "wait-for backend:8080 &&
+            watchmedo auto-restart -p 'tasks.py' -i '*.pyc' -- celery worker -B -l info -A sensorgnome_server.celery:app -s /tmp/celerybeat-schedule"
+    depends_on:
+      - backend
+      - rabbit
+      - db
+    networks:
+      - shared_network
+
+  db:
+    #image: postgres:10-alpine
+    image: postgis/postgis
+    container_name: sensorgnome-db
+    hostname: sensorgnome-db
+    environment:
+      - POSTGRES_DB=sensorgnome-server
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "54320:5432"
+    networks:
+      - shared_network
+networks:
+  shared_network:
+    driver: bridge
