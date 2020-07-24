@@ -1,4 +1,4 @@
-# Sensorgnome-Server-Django
+# New-Sensorgnome-Server
 
 Development repo for the new Sensorgnome server, with a focus on extensibility, security and ease of development. Based on Django.
 
