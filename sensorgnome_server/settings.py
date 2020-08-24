@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'message_queue',
     'rest_api',
     'sg_management',
+    'user_management',
 ]
 
 MIDDLEWARE = [
