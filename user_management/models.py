@@ -3,6 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.db import models
 import uuid
 from datetime import datetime, timezone
+from django.contrib.auth.models import User
+from django.conf import settings
 
 class SensorgnomeUser(models.Model):
     """
@@ -26,6 +28,29 @@ class SensorgnomeUser(models.Model):
 
     def __str__(self):
         return f"{self.user_name} in linked to {self.linked_external_user} of type {self.linked_external_user_type}"
+
+
+class LocalUser(models.Model):
+    """
+    Stub class for use with Django's local user management.
+    The intended use case for this is currently administration, *not* for sensorgnome users, but this could be extended to support that.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+    def create_local_user(self, username, password):
+        """
+        Creates a local user, and the associated Django User to go with it.
+        Args:
+            username (str): username
+            password (str): password, must meet Django's complexity requirements.
+        Returns:
+            LocalUser: created new user.
+        """
+        new_user = User.objects.create_user(username=username, password=password)
+        self.user = new_user
+        self.save()
 
 
 class MotusUser(models.Model):
