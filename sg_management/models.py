@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
 import uuid
-import datetime
+from datetime import datetime, timezone
 import motus_api
 
 class SensorGnome(models.Model):
@@ -23,7 +23,7 @@ class SensorGnome(models.Model):
         return f"{self.serial}/{self.name}: {self.last_seen}"
 
     def update_last_seen(self):
-        self.last_seen = datetime.now(datetime.timezone.utc)
+        self.last_seen = datetime.now(timezone.utc)
         self.save()
 
 
