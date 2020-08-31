@@ -69,6 +69,21 @@ services:
       - "54320:5432"
     networks:
       - shared_network
+
+  monitoring:
+    image: philhawthorne/docker-influxdb-grafana
+    container_name: influxdb-grafana
+    hostname: influxdb-grafana
+    ports:
+      - "3003:3003"  # grafana
+      - "3004:8083"  # chronograf
+      - "8087:8086"  # influxdb
+    volumes:
+      - ./influxdb-data:/var/lib/influxdb
+      - ./grafana-data:/var/lib/grafana
+    networks:
+      - shared_network
+
 networks:
   shared_network:
     driver: bridge
