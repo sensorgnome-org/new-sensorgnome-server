@@ -12,7 +12,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - .:/sensorgnome-server-software
+      - ./django:/sensorgnome-server-software
     command: >
       sh -c "wait-for db:5432 && wait-for rabbit:5672 &&
             python manage.py migrate &&
@@ -45,7 +45,7 @@ services:
     container_name: worker
     restart: on-failure
     volumes:
-      - .:/sensorgnome-server-software
+      - ./django:/sensorgnome-server-software
     command: >
       sh -c "wait-for backend:8080 &&
             watchmedo auto-restart -p 'tasks.py' -i '*.pyc' -- celery worker -B -l info -A sensorgnome_server.celery:app -s /tmp/celerybeat-schedule"
