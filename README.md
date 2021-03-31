@@ -10,7 +10,7 @@ Starting a development environment is simple:
 - Run `docker-compose build` to create the needed containers and images.
 - Run `docker-compose up` to start the databse server, the message queue server, Django and the worker processes.
 
-Note that the current set up does not support production usage.
+Note that the current set up does not support production usage, and code should be considered alpha quality.
 
 ## Django App Layout
 
@@ -40,3 +40,4 @@ The project is broken up into multiple parts:
 - Collect and manage data from Sensorgnomes.
 - Troubleshoot problematic Sensorgnomes.
 - Sync data and other information with Motus as needed.
+- Allow for the sending of alerts based on sensorgnome status.
