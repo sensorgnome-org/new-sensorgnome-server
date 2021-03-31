@@ -19,8 +19,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ah4pjd93s8&7cuz7e)v&c7*@^v@n&159+4ihe81e04i9s!@i&&'
+
+# Use a separate file for the secret key
+# generate this file using: "python manage.py generate_secret_key"
+# provided by: https://github.com/MickaelBergem/django-generate-secret-key
+try:
+    with open("secretkey.txt", 'r') as f:
+        SECRET_KEY = f.read().strip()
+except FileNotFoundError:
+    SECRET_KEY = "temp"
+    print("Secret key set to temporary value. Please run \"python manage.py generate_secret_key\" to generate one.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +53,7 @@ INSTALLED_APPS = [
     'rest_api',
     'sg_management',
     'user_management',
+    'django_generate_secret_key',
 ]
 
 MIDDLEWARE = [

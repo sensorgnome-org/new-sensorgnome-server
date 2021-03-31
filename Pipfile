@@ -19,6 +19,7 @@ watchdog = "*"
 pyyaml = "*"
 argh = "*"
 motus_api = {editable = true,git = "https://github.com/sensorgnome-org/python-motus-api.git",ref = "api-start"}
+django-generate-secret-key = "*"
 
 [requires]
 python_version = "3.8"

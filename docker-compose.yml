@@ -16,6 +16,7 @@ services:
     command: >
       sh -c "wait-for db:5432 && wait-for rabbit:5672 &&
             python manage.py migrate &&
+            python manage.py generate_secret_key &&
             # DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username admin --email admin@example.com &&
             python manage.py runserver 0.0.0.0:8080"
     stdin_open: true
@@ -48,7 +49,7 @@ services:
       - .:/sensorgnome-server-software
     command: >
       sh -c "wait-for backend:8080 &&
-            watchmedo auto-restart -p 'tasks.py' -i '*.pyc' -- celery worker -B -l info -A sensorgnome_server.celery:app -s /tmp/celerybeat-schedule"
+            watchmedo auto-restart -p 'tasks.py' -i '*.pyc' -- celery -A sensorgnome_server.celery:app worker -B -l info  -s /tmp/celerybeat-schedule"
     depends_on:
       - backend
       - rabbit
